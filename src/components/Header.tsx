@@ -6,21 +6,13 @@ import {
   Search, 
   Menu, 
   X, 
-  ChevronRight, 
-  Layers, 
-  Sparkles, 
-  FileText,
-  Rocket,
-  Download,
-  Check,
-  Loader2
+  ChevronRight
 } from 'lucide-react';
 import { Product, AppMode } from '../types';
-import { downloadProjectZip } from '../utils/projectDownloader';
 
 interface HeaderProps {
-  appMode: AppMode;
-  setAppMode: (mode: AppMode) => void;
+  appMode?: AppMode;
+  setAppMode?: (mode: AppMode) => void;
   cartCount: number;
   wishlistCount: number;
   onOpenCart: () => void;
@@ -30,12 +22,10 @@ interface HeaderProps {
   activeCategory: string;
   allProducts: Product[];
   onQuickView: (product: Product) => void;
-  onOpenSubmissionModal: () => void;
+  onOpenSubmissionModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  appMode,
-  setAppMode,
   cartCount,
   wishlistCount,
   onOpenCart,
@@ -45,28 +35,12 @@ export const Header: React.FC<HeaderProps> = ({
   activeCategory,
   allProducts,
   onQuickView,
-  onOpenSubmissionModal,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [downloadStatus, setDownloadStatus] = useState<'idle' | 'loading' | 'done'>('idle');
   const searchRef = useRef<HTMLDivElement>(null);
-
-  const handleDownloadZip = async () => {
-    try {
-      setDownloadStatus('loading');
-      await downloadProjectZip();
-      setDownloadStatus('done');
-      setTimeout(() => setDownloadStatus('idle'), 4000);
-    } catch (err) {
-      console.error('Failed to create browser zip:', err);
-      // Fallback: direct window location
-      window.location.href = '/minima-labs.zip';
-      setDownloadStatus('idle');
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,59 +80,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
-  
-            <button
-              onClick={() => setAppMode('wireframe')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
-                appMode === 'wireframe'
-                  ? 'bg-white text-slate-950 font-bold shadow-xs'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Low-Fi Wireframes (Desktop & Mobile)</span>
-            </button>
-
-            <button
-              onClick={() => onOpenSubmissionModal()}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs text-amber-300 hover:text-amber-200 transition-colors cursor-pointer"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>UX Case Study & Submission</span>
-            </button>
-
-            <button
-              onClick={handleDownloadZip}
-              disabled={downloadStatus === 'loading'}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-semibold transition-all shadow-xs cursor-pointer ${
-                downloadStatus === 'done'
-                  ? 'bg-emerald-400 text-slate-950'
-                  : downloadStatus === 'loading'
-                  ? 'bg-emerald-600 text-white cursor-wait opacity-80'
-                  : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
-              }`}
-              title="Click to generate and download the complete project ZIP right inside your browser"
-            >
-              {downloadStatus === 'loading' ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Packaging ZIP...</span>
-                </>
-              ) : downloadStatus === 'done' ? (
-                <>
-                  <Check className="w-3.5 h-3.5" />
-                  <span>Downloaded!</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download Code (.ZIP)</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* Modern Indian D2C Announcement Banner */}
       <div className="bg-[#0F172A] text-slate-200 text-[11px] md:text-xs py-1.5 px-4 text-center border-b border-slate-800 tracking-wide font-medium">
@@ -409,40 +330,30 @@ export const Header: React.FC<HeaderProps> = ({
                 </a>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-stone-200 space-y-3">
-                <button
-                  onClick={() => {
-                    setAppMode('wireframe');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-stone-100 text-xs font-medium text-stone-800"
+              <div className="mt-8 pt-6 border-t border-slate-200 space-y-2">
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Customer Care</div>
+                <a
+                  href="#promotions"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-700"
                 >
-                  <span className="flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-stone-600" />
-                    Inspect Low-Fi Wireframes
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-stone-400" />
-                </button>
-
-                <button
-                  onClick={() => {
-                    onOpenSubmissionModal();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-stone-900 text-xs font-medium text-white"
+                  <span>Track Your Order</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+                <a
+                  href="#philosophy"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-700"
                 >
-                  <span className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-amber-300" />
-                    UX Case Study & Submission
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-stone-400" />
-                </button>
+                  <span>100% Transparent Active Formulations</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                </a>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-stone-100 text-xs text-stone-500">
-              <p>Toposel UI/UX Assignment</p>
-              <p className="text-[11px] text-stone-400 mt-0.5">Designed with Clean UI & Strong Content Hierarchy</p>
+            <div className="pt-6 border-t border-slate-100 text-xs text-slate-500">
+              <p className="font-semibold text-slate-800">MINIMA LABS INDIA</p>
+              <p className="text-[11px] text-slate-400 mt-0.5">High Performance Indian Active Skincare</p>
             </div>
           </div>
         </div>
