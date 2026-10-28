@@ -106,30 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
-      {/* Top Assignment Mode Bar */}
-      <div className="bg-[#0F172A] text-[#F8FAFC] text-xs px-4 py-2 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="font-semibold tracking-wide uppercase text-[11px] text-slate-200">
-              Toposel UI/UX Assignment · Indian Beauty E-Commerce (Minimalist & Nykaa Inspired)
-            </span>
-          </div>
-
-          {/* Mode Switcher */}
-          <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-md border border-slate-750">
-            <button
-              onClick={() => setAppMode('storefront')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
-                appMode === 'storefront'
-                  ? 'bg-white text-slate-950 font-bold shadow-xs'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Live Storefront</span>
-            </button>
-
+  
             <button
               onClick={() => setAppMode('wireframe')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
